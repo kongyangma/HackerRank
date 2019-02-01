@@ -1,0 +1,9 @@
+SELECT Start_Date,MIN(End_date) AS End_Date
+FROM (SELECT Start_Date FROM h_projects 
+	  WHERE Start_Date NOT IN (SELECT End_Date FROM h_projects)) AS s,
+	  (SELECT End_Date FROM h_projects
+       WHERE End_Date NOT IN (SELECT Start_Date FROM h_projects)) AS e
+WHERE Start_Date<End_Date
+GROUP BY Start_Date
+ORDER BY TIMEDIFF(MIN(End_Date),Start_Date),Start_Date
+;
