@@ -37,6 +37,7 @@ where employee_id is an employee's ID number, name is their name, months is the 
 **Explanation**
 
 The table and earnings data is depicted in the following diagram: 
+
 |**employee_id**|**name**|**months**|**salary**|**earnings**|
 |---|---|---|---|---|
 |12228|Rose|15|1968|29520|
