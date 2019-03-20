@@ -1,0 +1,12 @@
+SELECT MIN(Doctor),MIN(Professor),MIN(Singer),MIN(Actor)
+FROM (SELECT (CASE occupation WHEN 'Doctor' THEN @r1:=@r1+1
+                        WHEN 'Professor' THEN @r2:=@r2+1
+                        WHEN 'Singer' THEN @r3:=@r3+1
+                        WHEN 'Actor' THEN @r4:=@r4+1 END) AS Rowline,
+	   (CASE WHEN occupation='Doctor' THEN Name END) AS Doctor,
+       (CASE WHEN occupation='Professor' THEN Name END)AS Professor,
+       (CASE WHEN occupation='Singer' THEN Name END)AS Singer,
+       (CASE WHEN occupation='Actor' THEN Name END)AS Actor
+FROM occupations
+ORDER BY Name) AS t
+GROUP BY Rowline;
