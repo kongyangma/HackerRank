@@ -1,0 +1,13 @@
+SELECT t.contest_id,t.hacker_id,t.name, SUM(sg.tsub), SUM(sg.tasub), SUM(vg.tview), SUM(vg.tuview)
+FROM Contests t 
+JOIN Colleges c ON t.contest_id=c.contest_id
+JOIN Challenges ch ON ch.college_id=c.college_id
+LEFT JOIN (SELECT challenge_id, SUM(total_views) tview, SUM(total_unique_views) tuview
+FROM View_Stats
+GROUP BY challenge_id) AS vg ON ch.challenge_id=vg.challenge_id
+LEFT JOIN (SELECT challenge_id,SUM(total_submissions) tsub,SUM(total_accepted_submissions) tasub
+FROM Submission_Stats
+GROUP BY challenge_id) AS sg ON ch.challenge_id=sg.challenge_id
+GROUP BY t.contest_id,t.hacker_id,t.name
+HAVING SUM(sg.tsub)+SUM(sg.tasub)+SUM(vg.tview)+SUM(vg.tuview)>0
+ORDER BY t.contest_id;
