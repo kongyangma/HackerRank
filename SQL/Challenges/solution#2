@@ -1,0 +1,15 @@
+SELECT h.hacker_id,h.name, COUNT(h.hacker_id) AS total
+FROM Hackers h
+JOIN Challenges c
+ON h.hacker_id=c.hacker_id
+GROUP BY h.hacker_id,h.name
+HAVING total=(SELECT MAX(temp.cnt) 
+             FROM (SELECT COUNT(*) AS cnt  
+             FROM Challenges 
+             GROUP BY hacker_id) temp)
+OR total IN (SELECT t.cnt
+              FROM (SELECT COUNT(*) AS cnt FROM Challenges GROUP BY hacker_id) t
+              GROUP BY t.cnt
+              HAVING COUNT(t.cnt)=1)
+ORDER BY total DESC, h.hacker_id
+;
