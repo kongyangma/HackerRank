@@ -1,0 +1,18 @@
+/*逻辑是：制造两个新表，里面都有2-1000的数，然后根据条件来筛选，最后列出*/
+/*学会使用information_schema.tables来列出大量行的consecutive numbers*/
+/*一个information_schema.tables最多有358行，而两个有127450行*/
+
+SELECT GROUP_CONCAT(NUMB SEPARATOR '&') AS prime_numbers
+FROM 
+(SELECT @num:=@num+1 AS NUMB
+ FROM information_schema.tables t1, information_schema.tables t2, (SELECT @num:=1) AS temp)
+tempNum
+WHERE NUMB<1000 AND NOT EXISTS(
+				SELECT *
+                FROM (SELECT @nu:=@nu+1 AS NUMA
+                      FROM information_schema.tables t1, information_schema.tables t2,
+                      (SELECT @nu:=1) AS tem
+                      LIMIT 1000) tat
+				WHERE FLOOR(NUMB/NUMA)=(NUMB/NUMA) AND NUMA<NUMB AND NUMA>1
+);
+
